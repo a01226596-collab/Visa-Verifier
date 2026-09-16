@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visa Verification System</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6f9; text-align: center; padding: 20px; }
+    .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 450px; margin: 0 auto; }
+    h2 { color: #1a365d; margin-bottom: 20px; }
+    input { width: 80%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; text-align: center; }
+    button { background: #007bff; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 6px; cursor: pointer; }
+    .result { margin-top: 20px; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 18px; display: none; }
+    .valid { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .invalid { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .info { text-align: left; font-weight: normal; font-size: 14px; margin-top: 10px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Visa Status Verification</h2>
+    <p>Enter Visa or Passport Number</p>
+    <input type="text" id="searchId" placeholder="e.g. EP8721929 or 6546387">
+    <br>
+    <button onclick="verifyVisa()">Verify Status</button>
+
+    <div id="resultBox" class="result">
+      <div id="statusText"></div>
+      <div id="details" class="info"></div>
+    </div>
+  </div>
+
+  <script>
+    const database = [
+      { passport: "EP8721929", visa: "6546387", name: "NIGAT SEYFU FASAMO", status: "VALID" },
+      { passport: "E00645534", visa: "3570198", name: "TIRUSEW ABATE DAGNAW", status: "VALID" }
+    ];
+
+    function verifyVisa() {
+      const query = document.getElementById('searchId').value.trim().toUpperCase();
+      const resultBox = document.getElementById('resultBox');
+      const statusText = document.getElementById('statusText');
+      const details = document.getElementById('details');
+
+      if (!query) return;
+
+      const record = database.find(item => item.passport.toUpperCase() === query || item.visa === query);
+
+      resultBox.style.display = "block";
+
+      if (record) {
+        if (record.status === "VALID") {
+          resultBox.className = "result valid";
+          statusText.innerText = "🟢 Status: ACTIVE / VALID";
+        } else {
+          resultBox.className = "result invalid";
+          statusText.innerText = "🔴 Status: CANCELLED / INVALID";
+        }
+        details.innerHTML = `<hr><b>Name:</b> ${record.name}<br><b>Passport No:</b> ${record.passport}<br><b>Visa No:</b> ${record.visa}`;
+      } else {
+        resultBox.className = "result invalid";
+        statusText.innerText = "❌ Record Not Found";
+        details.innerHTML = "";
+      }
+    }
+  </script>
+
+</body>
+</html>
