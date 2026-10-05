@@ -1,495 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>e-VISA Verification System</title>
-  <style>
-    :root {
-      --primary-color: #8b1d24;
-      --header-bg: #4f5358;
-      --border-color: #333;
-      --light-border: #ccc;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-    body {
-      background-color: #f4f4f9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 10px;
-      color: #333;
-    }
-    .search-card {
-      background: white;
-      border: 2px solid var(--primary-color);
-      border-radius: 8px;
-      padding: 20px;
-      width: 100%;
-      max-width: 800px;
-      text-align: center;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .search-card h2 {
-      color: var(--primary-color);
-      margin-bottom: 15px;
-      font-size: 22px;
-    }
-    .search-box {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .search-box input {
-      padding: 10px 15px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      width: 60%;
-      min-width: 200px;
-    }
-    .search-box button {
-      padding: 10px 25px;
-      font-size: 16px;
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .document-container {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      width: 100%;
-      max-width: 800px;
-      padding: 25px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      display: none;
-    }
-    
-    /* Header Section */
-    .header-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-    .header-table td {
-      vertical-align: top;
-    }
-    .logo-container {
-      width: 120px;
-      text-align: left;
-    }
-    .logo-circle {
-      width: 80px;
-      height: 80px;
-      background-color: #8b1d24;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    .logo-circle .e-letter {
-      font-size: 32px;
-      line-height: 1;
-    }
-    .logo-text {
-      font-size: 11px;
-      text-align: center;
-      color: #333;
-    }
-    .header-title-ar {
-      text-align: right;
-      font-size: 18px;
-      font-weight: bold;
-      line-height: 1.4;
-    }
-    .header-title-en {
-      text-align: right;
-      font-size: 14px;
-      color: #555;
-      margin-top: 5px;
-    }
-
-    /* Main Title */
-    .main-title-section {
-      text-align: center;
-      margin: 20px 0;
-    }
-    .main-title-ar {
-      font-size: 28px;
-      font-weight: bold;
-      color: #000;
-    }
-    .main-title-en {
-      font-size: 20px;
-      font-weight: bold;
-      color: #000;
-      margin-top: 2px;
-    }
-
-    /* Welcome Section */
-    .welcome-section {
-      display: flex;
-      justify-content: space-between;
-      margin: 20px 0;
-      padding: 0 10px;
-    }
-    .welcome-en {
-      font-size: 18px;
-      font-style: italic;
-      color: #777;
-      font-family: 'Georgia', serif;
-    }
-    .welcome-ar {
-      font-size: 22px;
-      color: #777;
-      font-family: 'Traditional Arabic', 'Georgia', serif;
-    }
-
-    /* Status Badge Section */
-    .status-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 15px 0 25px 0;
-    }
-    .status-badge {
-      background-color: #28a745;
-      color: white;
-      padding: 8px 24px;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 16px;
-      letter-spacing: 1px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 2px 4px rgba(40,167,69,0.3);
-    }
-    .status-badge::before {
-      content: "✓";
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    /* Tables Style */
-    .section-header {
-      background-color: var(--header-bg);
-      color: white;
-      text-align: center;
-      padding: 8px;
-      font-weight: bold;
-      font-size: 15px;
-      border: 1px solid var(--border-color);
-    }
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 25px;
-    }
-    .data-table th, .data-table td {
-      border: 1px solid var(--border-color);
-      padding: 8px 10px;
-      font-size: 13px;
-      text-align: center;
-    }
-    .data-table th {
-      background-color: #f9f9f9;
-      font-weight: bold;
-      width: 25%;
-    }
-    .data-table td {
-      background-color: white;
-    }
-
-    /* Visitors Table specific */
-    .visitors-table th {
-      background-color: #f2f2f2;
-      font-size: 11px;
-      padding: 6px 4px;
-    }
-    .visitors-table td {
-      font-size: 12px;
-      padding: 8px 4px;
-    }
-
-    /* Footer Section */
-    .footer-section {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-top: 30px;
-      padding-top: 20px;
-    }
-    .notes-list {
-      font-size: 11px;
-      color: #333;
-      line-height: 1.6;
-      max-width: 70%;
-    }
-    .notes-list ol {
-      padding-left: 18px;
-    }
-    .qr-container {
-      text-align: center;
-    }
-    .qr-code {
-      width: 110px;
-      height: 110px;
-      border: 1px solid #ccc;
-      padding: 5px;
-      background: white;
-    }
-
-    .error-msg {
-      color: red;
-      margin-top: 10px;
-      display: none;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Application - Royal Oman Police</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+        }
+        .header-bar {
+            background-color: #2b579a;
+            color: white;
+            padding: 8px 15px;
+            text-align: right;
+            font-size: 14px;
+        }
+        .header-bar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 600px;
+            margin: 15px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            font-size: 20px;
+            color: #111;
+            margin-bottom: 20px;
+        }
+        .form-box {
+            background-color: #eef1f5;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #dcdcdc;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #444;
+        }
+        .form-group label span {
+            color: red;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            font-size: 14px;
+            background-color: #fff;
+        }
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .captcha-box {
+            background: linear-gradient(135deg, #bbb, #888);
+            color: #000;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 22px;
+            letter-spacing: 4px;
+            padding: 6px 15px;
+            text-decoration: line-through;
+            user-select: none;
+            border: 1px solid #999;
+        }
+        .btn-search {
+            background-color: #2b579a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .btn-search:hover {
+            background-color: #1f3f70;
+        }
+        /* Table Styles */
+        .result-container {
+            margin-top: 25px;
+            display: none;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: center;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 5px;
+        }
+        th {
+            background-color: #f0f4f8;
+            color: #2b579a;
+            font-weight: bold;
+        }
+        .status-approved {
+            color: #0d8a00;
+            font-weight: bold;
+        }
+        .error-msg {
+            color: red;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+        }
+        .footer-pattern {
+            margin-top: 30px;
+            background-color: #2b579a;
+            height: 40px;
+            background-image: radial-gradient(white 15%, transparent 16%);
+            background-size: 10px 10px;
+            display: flex;
+            align-items: center;
+            padding-left: 15px;
+        }
+        .menu-icon {
+            color: white;
+            font-size: 20px;
+            border: 1px solid white;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="search-card">
-    <h2>e-VISA Verification System</h2>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Enter Visa No. or Passport No.">
-      <button onclick="verifyVisa()">Verify</button>
-    </div>
-    <div id="errorMsg" class="error-msg">Invalid Visa or Passport Number!</div>
-  </div>
-
-  <div id="visaDocument" class="document-container">
-    
-    <!-- Top Header -->
-    <table class="header-table">
-      <tr>
-        <td class="logo-container">
-          <div class="logo-circle">
-            <span class="e-letter">e</span>
-          </div>
-          <div class="logo-text">
-            <strong>VISA</strong><br>
-            Jordan<br>
-            تأشيرة إلكترونية
-          </div>
-        </td>
-        <td>
-          <div class="header-title-ar">المملكة الأردنية الهاشمية - وزارة الداخلية</div>
-          <div class="header-title-en">The Hashemite Kingdom of Jordan - Ministry of Interior</div>
-        </td>
-      </tr>
-    </table>
-
-    <!-- Main Title -->
-    <div class="main-title-section">
-      <div class="main-title-ar">تأشيرة إلكترونية - e-VISA</div>
+    <div class="header-bar">
+        <a href="#">العربية</a>
     </div>
 
-    <!-- Welcome -->
-    <div class="welcome-section">
-      <div class="welcome-en">Welcome to Jordan</div>
-      <div class="welcome-ar">أهلاً وسهلاً بكم في الأردن</div>
+    <div class="container">
+        <h2>Track Your Application</h2>
+
+        <div class="form-box">
+            <form id="trackForm">
+                <div class="form-group">
+                    <label>Visa Application Number <span>(*)</span></label>
+                    <input type="text" id="appNum" required placeholder="Enter Application Number">
+                </div>
+
+                <div class="form-group">
+                    <label>Travel Document Number <span>(*)</span></label>
+                    <input type="text" id="docNum" required placeholder="Enter Passport Number">
+                </div>
+
+                <div class="form-group">
+                    <label>Document's Nationality <span>(*)</span></label>
+                    <select id="nationality" required>
+                        <option value="ETHIOPIA">ETHIOPIA</option>
+                        <option value="SUDAN">SUDAN</option>
+                        <option value="EGYPT">EGYPT</option>
+                        <option value="SOMALIA">SOMALIA</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Text Verification <span>(*)</span></label>
+                    <div class="captcha-container">
+                        <div class="captcha-box">6866</div>
+                    </div>
+                    <input type="text" id="captcha" style="margin-top: 8px;" required placeholder="Enter captcha code">
+                </div>
+
+                <button type="submit" class="btn-search">Search</button>
+                <div id="errorMsg" class="error-msg">No records found. Please check your details.</div>
+            </form>
+        </div>
+
+        <!-- Result Table -->
+        <div class="result-container" id="resultBox">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Visa Application Number</th>
+                        <th>Travel Document Nationality</th>
+                        <th>Travel Document Number</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="resAppNum">100067809809</td>
+                        <td id="resNat">ETHIOPIA</td>
+                        <td id="resDocNum">EQ2461753</td>
+                        <td class="status-approved">Approved</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- Active / Approved Status Badge -->
-    <div class="status-container">
-      <div class="status-badge">ACTIVE / APPROVED</div>
+    <div class="footer-pattern">
+        <div class="menu-icon">☰</div>
     </div>
 
-    <!-- 1. Visa Information Table -->
-    <div class="section-header">معلومات التأشيرة - Visa Information</div>
-    <table class="data-table">
-      <tr>
-        <th>نوع التأشيرة<br>Visa Type</th>
-        <td id="visaType">Tourism Visa - تأشيرة بقصد السياحة</td>
-      </tr>
-      <tr>
-        <th>تاريخ الإصدار<br>Date of Issue</th>
-        <td id="dateOfIssue">26/09/2026</td>
-      </tr>
-      <tr>
-        <th>مدة التأشيرة<br>Visa Period</th>
-        <td id="visaPeriod">Single Entry - سفرة واحدة</td>
-      </tr>
-      <tr>
-        <th>الكفيل<br>Sponsor</th>
-        <td id="sponsor">خطاب للسياحه والسفر والحج والعمره</td>
-      </tr>
-      <tr>
-        <th>صالحة لغاية<br>Valid Until</th>
-        <td id="validUntil">25/12/2026</td>
-      </tr>
-    </table>
+    <script>
+        // Database of registered visas
+        const visaDatabase = [
+            {
+                appNum: "100067809809",
+                docNum: "EQ2461753",
+                nationality: "ETHIOPIA",
+                status: "Approved"
+            },
+            {
+                appNum: "100067809809",
+                docNum: "EQ2461753",
+                nationality: "ETHIOPIA",
+                status: "Approved"
+            }
+        ];
 
-    <!-- 2. Visitors Information Table -->
-    <div class="section-header">معلومات الزائرين - Visitors Information</div>
-    <table class="data-table visitors-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>الاسم الكامل<br>Full Name</th>
-          <th>الجنسية<br>Nationality</th>
-          <th>رقم التأشيرة<br>Visa Number</th>
-          <th>تاريخ الميلاد<br>Date of Birth</th>
-          <th>رقم الجواز<br>Passport No.</th>
-          <th>بلد المصدر للوثيقة<br>Document Country</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td id="fullName">MESKEREM ABRHAM AYANO</td>
-          <td id="nationality">اتዮጵያ<br>ETHIOPIA</td>
-          <td id="visaNumber">1000909</td>
-          <td id="dob">04/03/2002</td>
-          <td id="passportNo">EQ2827035</td>
-          <td id="docCountry">ETHIOPIA</td>
-        </tr>
-      </tbody>
-    </table>
+        document.getElementById('trackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const inputApp = document.getElementById('appNum').value.trim();
+            const inputDoc = document.getElementById('docNum').value.trim();
+            const inputNat = document.getElementById('nationality').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const resultBox = document.getElementById('resultBox');
 
-    <!-- 3. Payment Information Table -->
-    <div class="section-header">معلومات الدفع - Payment Information</div>
-    <table class="data-table">
-      <tr>
-        <th>المبلغ المدفوع<br>Paid Amount</th>
-        <td id="paidAmount">40.00 JOD</td>
-      </tr>
-      <tr>
-        <th>رقم الوصل<br>Receipt No.</th>
-        <td id="receiptNo">REC-9928104</td>
-      </tr>
-    </table>
+            // Find matching visa record
+            const match = visaDatabase.find(item => 
+                item.appNum === inputApp && 
+                item.docNum.toUpperCase() === inputDoc.toUpperCase()
+            );
 
-    <!-- Footer Notes & QR -->
-    <div class="footer-section">
-      <div class="notes-list">
-        <strong>ملاحظات / Notes:</strong>
-        <ol>
-          <li>هذه التأشيرة صالحة للدخول خلال المدة المحددة أعلاه.</li>
-          <li>يجب الالتزام بالقوانين والأنظمة المعمول بها في المملكة الأردنية الهاشمية.</li>
-          <li>This e-VISA is valid for entry during the specified period above.</li>
-        </ol>
-      </div>
-      <div class="qr-container">
-        <img class="qr-code" id="qrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=3570198" alt="QR Code">
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    const visaData = {
-      "EQ2827035": {
-        fullName: "MESKEREM ABRHAM AYANO",
-        visaNumber: "1000909",
-        passportNo: "EQ2827035",
-        dob: "04/03/2001",
-        nationality: "اتዮጵያ / ETHIOPIA",
-        docCountry: "ETHIOPIA",
-        visaType: "Tourism Visa - تأشيرة بقصد السياحة",
-        dateOfIssue: "26/09/2026",
-        visaPeriod: "Single Entry - سفرة واحدة",
-        sponsor: "خطاب للسياحه والسفر والحج والعمره",
-        validUntil: "25/12/2026",
-        paidAmount: "40.00 JOD",
-        receiptNo: "REC-9928104"
-      },
-      "1000909": {
-        fullName: "MESKEREM ABRHAM AYANO",
-        visaNumber: "1000909",
-        passportNo: "EQ2827035",
-        dob: "04/03/2001",
-        nationality: "اتዮጵያ / ETHIOPIA",
-        docCountry: "ETHIOPIA",
-        visaType: "Tourism Visa - تأشيرة بقصد السياحة",
-        dateOfIssue: "26/09/2026",
-        visaPeriod: "Single Entry - سفرة واحدة",
-        sponsor: "خطاب للسياحه والسفر والحج والعمره",
-        validUntil: "25/12/2026",
-        paidAmount: "40.00 JOD",
-        receiptNo: "REC-9928104"
-      },
-      "EQ2827035": {
-        fullName: "MESKEREM ABRHAM AYANO",
-        visaNumber: "1000909",
-        passportNo: "EQ2827035",
-        dob: "04/03/2001",
-        nationality: "اتዮጵያ / ETHIOPIA",
-        docCountry: "ETHIOPIA",
-        visaType: "Tourism Visa - تأشيرة بقصد السياحة",
-        dateOfIssue: "26/09/2026",
-        visaPeriod: "Single Entry - سفرة واحدة",
-        sponsor: "خطاب للسياحه والسفر والحج والعمره",
-        validUntil: "25/12/2026",
-        paidAmount: "40.00 JOD",
-        receiptNo: "REC-9928104"
-      },
-      "1000909": {
-        fullName: "MESKEREM ABRHAM AYANO",
-        visaNumber: "1000909",
-        passportNo: "EQ2827035",
-        dob: "04/03/2001",
-        nationality: "اتዮጵያ / ETHIOPIA",
-        docCountry: "ETHIOPIA",
-        visaType: "Tourism Visa - تأشيرة بقصد السياحة",
-        dateOfIssue: "26/09/2026",
-        visaPeriod: "Single Entry - سفرة واحدة",
-        sponsor: "خطاب للسياحه والسفر والحج والعمره",
-        validUntil: "25/12/2026",
-        paidAmount: "40.00 JOD",
-        receiptNo: "REC-9928104"
-      }
-    };
-
-    function verifyVisa() {
-      const input = document.getElementById('searchInput').value.trim().toUpperCase();
-      const doc = document.getElementById('visaDocument');
-      const error = document.getElementById('errorMsg');
-
-      if (visaData[input]) {
-        const record = visaData[input];
-        document.getElementById('fullName').innerText = record.fullName;
-        document.getElementById('visaNumber').innerText = record.visaNumber;
-        document.getElementById('passportNo').innerText = record.passportNo;
-        document.getElementById('dob').innerText = record.dob;
-        document.getElementById('nationality').innerText = record.nationality;
-        document.getElementById('docCountry').innerText = record.docCountry;
-        document.getElementById('visaType').innerText = record.visaType;
-        document.getElementById('dateOfIssue').innerText = record.dateOfIssue;
-        document.getElementById('visaPeriod').innerText = record.visaPeriod;
-        document.getElementById('sponsor').innerText = record.sponsor;
-        document.getElementById('validUntil').innerText = record.validUntil;
-        document.getElementById('paidAmount').innerText = record.paidAmount;
-        document.getElementById('receiptNo').innerText = record.receiptNo;
-        
-        // Update QR Code
-        document.getElementById('qrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${record.visaNumber}`;
-
-        doc.style.display = 'block';
-        error.style.display = 'none';
-      } else {
-        doc.style.display = 'none';
-        error.style.display = 'block';
-      }
-    }
-  </script>
-
+            if (match) {
+                errorMsg.style.display = 'none';
+                document.getElementById('resAppNum').innerText = match.appNum;
+                document.getElementById('resNat').innerText = match.nationality;
+                document.getElementById('resDocNum').innerText = match.docNum;
+                resultBox.style.display = 'block';
+            } else {
+                resultBox.style.display = 'none';
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
