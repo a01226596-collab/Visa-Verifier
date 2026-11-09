@@ -15,245 +15,141 @@
             background-color: #f4f6f9;
             color: #333;
         }
-        .header-bar {
-            background-color: #2b579a;
-            color: white;
-            padding: 8px 15px;
-            text-align: right;
-            font-size: 14px;
-        }
-        .header-bar a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
         .container {
             max-width: 600px;
-            margin: 15px auto;
+            margin: 20px auto;
             background: #fff;
             padding: 20px;
-            border-radius: 4px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         h2 {
-            font-size: 20px;
-            color: #111;
             margin-bottom: 20px;
-        }
-        .form-box {
-            background-color: #eef1f5;
-            padding: 15px;
-            border-radius: 4px;
-            border: 1px solid #dcdcdc;
+            font-size: 22px;
+            color: #2b579a;
         }
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
-        .form-group label {
+        label {
             display: block;
+            margin-bottom: 5px;
             font-size: 14px;
             font-weight: bold;
-            margin-bottom: 4px;
-            color: #444;
+            color: #333;
         }
-        .form-group label span {
-            color: red;
-        }
-        .form-group input, .form-group select {
+        input[type="text"], select {
             width: 100%;
-            padding: 8px 10px;
+            padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 2px;
+            border-radius: 4px;
             font-size: 14px;
-            background-color: #fff;
-        }
-        .captcha-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 5px;
+            background-color: #f9f9f9;
         }
         .captcha-box {
-            background: linear-gradient(135deg, #bbb, #888);
-            color: #000;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            font-size: 22px;
-            letter-spacing: 4px;
-            padding: 6px 15px;
-            text-decoration: line-through;
-            user-select: none;
-            border: 1px solid #999;
-        }
-        .btn-search {
-            background-color: #2b579a;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 3px;
-            margin-top: 10px;
-            width: 100%;
-        }
-        .btn-search:hover {
-            background-color: #1f3f70;
-        }
-        .result-container {
-            margin-top: 25px;
-            display: none;
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            text-align: center;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px 5px;
-        }
-        th {
-            background-color: #f0f4f8;
-            color: #2b579a;
-            font-weight: bold;
-        }
-        .status-approved {
-            color: #0d8a00;
-            font-weight: bold;
-        }
-        .error-msg {
-            color: red;
-            font-size: 13px;
-            margin-top: 10px;
-            display: none;
-        }
-        .footer-pattern {
-            margin-top: 30px;
-            background-color: #2b579a;
-            height: 40px;
-            background-image: radial-gradient(white 15%, transparent 16%);
-            background-size: 10px 10px;
             display: flex;
             align-items: center;
-            padding-left: 15px;
+            margin-bottom: 10px;
         }
-        .menu-icon {
+        .captcha-img {
+            background: #666;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-style: italic;
+            letter-spacing: 3px;
+            border-radius: 4px;
+            user-select: none;
+            text-decoration: line-through;
+        }
+        .search-btn {
+            background-color: #1b365d;
             color: white;
-            font-size: 20px;
-            border: 1px solid white;
-            padding: 2px 6px;
-            border-radius: 3px;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .search-btn:hover {
+            background-color: #132743;
+        }
+        /* Result Box Style */
+        #result-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .approved {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
     </style>
 </head>
 <body>
 
-    <div class="header-bar">
-        <a href="#">العربية</a>
-    </div>
-
     <div class="container">
         <h2>Track Your Application</h2>
-
-        <div class="form-box">
-            <form id="trackForm">
-                <div class="form-group">
-                    <label>Visa Application Number <span>(*)</span></label>
-                    <input type="text" id="appNum" required placeholder="Enter Application Number">
+        <form id="visaForm">
+            <div class="form-group">
+                <label>Visa Application Number (*)</label>
+                <input type="text" id="appId" required>
+            </div>
+            <div class="form-group">
+                <label>Travel Document Number (*)</label>
+                <input type="text" id="passport" required>
+            </div>
+            <div class="form-group">
+                <label>Document's Nationality (*)</label>
+                <select id="nationality">
+                    <option value="ETHIOPIA">ETHIOPIA</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Text Verification (*)</label>
+                <div class="captcha-box">
+                    <div class="captcha-img">6866</div>
                 </div>
+                <input type="text" id="captchaInput" required>
+            </div>
+            <button type="submit" class="search-btn">Search</button>
+        </form>
 
-                <div class="form-group">
-                    <label>Travel Document Number <span>(*)</span></label>
-                    <input type="text" id="docNum" required placeholder="Enter Passport Number">
-                </div>
-
-                <div class="form-group">
-                    <label>Document's Nationality <span>(*)</span></label>
-                    <select id="nationality" required>
-                        <option value="ETHIOPIA">ETHIOPIA</option>
-                        <option value="SUDAN">SUDAN</option>
-                        <option value="EGYPT">EGYPT</option>
-                        <option value="SOMALIA">SOMALIA</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Text Verification <span>(*)</span></label>
-                    <div class="captcha-container">
-                        <div class="captcha-box">6866</div>
-                    </div>
-                    <input type="text" id="captcha" style="margin-top: 8px;" required placeholder="Enter captcha code">
-                </div>
-
-                <button type="submit" class="btn-search">Search</button>
-                <div id="errorMsg" class="error-msg">No records found. Please check your details.</div>
-            </form>
-        </div>
-
-        <div class="result-container" id="resultBox">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Visa Application Number</th>
-                        <th>Travel Document Nationality</th>
-                        <th>Travel Document Number</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td id="resAppNum"></td>
-                        <td id="resNat"></td>
-                        <td id="resDocNum"></td>
-                        <td class="status-approved" id="resStatus">Approved</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="footer-pattern">
-        <div class="menu-icon">☰</div>
+        <div id="result-box"></div>
     </div>
 
     <script>
-        document.getElementById('trackForm').addEventListener('submit', async function(e) {
+        document.getElementById('visaForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const inputApp = document.getElementById('appNum').value.trim();
-            const inputDoc = document.getElementById('docNum').value.trim();
-            const inputNat = document.getElementById('nationality').value;
-            const errorMsg = document.getElementById('errorMsg');
-            const resultBox = document.getElementById('resultBox');
+            const appId = document.getElementById('appId').value.trim();
+            const passport = document.getElementById('passport').value.trim();
+            const resultBox = document.getElementById('result-box');
 
-            try {
-                const response = await fetch('/api/track', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ appNum: inputApp, docNum: inputDoc, nationality: inputNat })
-                });
-                
-                const result = await response.json();
-
-                if (result.success) {
-                    errorMsg.style.display = 'none';
-                    document.getElementById('resAppNum').innerText = result.data.appNum;
-                    document.getElementById('resNat').innerText = result.data.nationality;
-                    document.getElementById('resDocNum').innerText = result.data.docNum;
-                    document.getElementById('resStatus').innerText = result.data.status;
-                    resultBox.style.display = 'block';
-                } else {
-                    resultBox.style.display = 'none';
-                    errorMsg.innerText = result.message;
-                    errorMsg.style.display = 'block';
-                }
-            } catch (err) {
-                console.error(err);
+            // ትክክለኛውን መረጃ ማረጋገጥ
+            if (appId === '100066707335' && passport === 'E00865368') {
+                resultBox.style.display = 'block';
+                resultBox.className = 'approved';
+                resultBox.innerHTML = 'Status: Approved! ✅ (Visa Granted)';
+            } else {
+                resultBox.style.display = 'block';
+                resultBox.className = 'error';
+                resultBox.innerHTML = 'Invalid Application Number or Passport Number.';
             }
         });
     </script>
+
 </body>
 </html>
