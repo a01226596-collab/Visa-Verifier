@@ -100,7 +100,6 @@
         .btn-search:hover {
             background-color: #1f3f70;
         }
-        /* Table Styles */
         .result-container {
             margin-top: 25px;
             display: none;
@@ -121,7 +120,7 @@
             color: #2b579a;
             font-weight: bold;
         }
-        .status-Draft {
+        .status-approved {
             color: #0d8a00;
             font-weight: bold;
         }
@@ -194,7 +193,6 @@
             </form>
         </div>
 
-        <!-- Result Table -->
         <div class="result-container" id="resultBox">
             <table>
                 <thead>
@@ -207,10 +205,10 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td id="resAppNum">100066496812</td>
-                        <td id="resNat">ETHIOPIA</td>
-                        <td id="resDocNum">EQ2848741</td>
-                        <td class="status-Draft">Draft</td>
+                        <td id="resAppNum"></td>
+                        <td id="resNat"></td>
+                        <td id="resDocNum"></td>
+                        <td class="status-approved" id="resStatus">Approved</td>
                     </tr>
                 </tbody>
             </table>
@@ -222,23 +220,7 @@
     </div>
 
     <script>
-        // Database of registered visas
-        const visaDatabase = [
-            {
-                appNum: "100066496812",
-                docNum: "EQ2848741",
-                nationality: "ETHIOPIA",
-                status: "Draft"
-            },
-            {
-                appNum: "100066496812",
-                docNum: "EQ2848741",
-                nationality: "ETHIOPIA",
-                status: "Draft"
-            }
-        ];
-
-        document.getElementById('trackForm').addEventListener('submit', function(e) {
+        document.getElementById('trackForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const inputApp = document.getElementById('appNum').value.trim();
@@ -247,21 +229,29 @@
             const errorMsg = document.getElementById('errorMsg');
             const resultBox = document.getElementById('resultBox');
 
-            // Find matching visa record
-            const match = visaDatabase.find(item => 
-                item.appNum === inputApp && 
-                item.docNum.toUpperCase() === inputDoc.toUpperCase()
-            );
+            try {
+                const response = await fetch('/api/track', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ appNum: inputApp, docNum: inputDoc, nationality: inputNat })
+                });
+                
+                const result = await response.json();
 
-            if (match) {
-                errorMsg.style.display = 'none';
-                document.getElementById('resAppNum').innerText = match.appNum;
-                document.getElementById('resNat').innerText = match.nationality;
-                document.getElementById('resDocNum').innerText = match.docNum;
-                resultBox.style.display = 'block';
-            } else {
-                resultBox.style.display = 'none';
-                errorMsg.style.display = 'block';
+                if (result.success) {
+                    errorMsg.style.display = 'none';
+                    document.getElementById('resAppNum').innerText = result.data.appNum;
+                    document.getElementById('resNat').innerText = result.data.nationality;
+                    document.getElementById('resDocNum').innerText = result.data.docNum;
+                    document.getElementById('resStatus').innerText = result.data.status;
+                    resultBox.style.display = 'block';
+                } else {
+                    resultBox.style.display = 'none';
+                    errorMsg.innerText = result.message;
+                    errorMsg.style.display = 'block';
+                }
+            } catch (err) {
+                console.error(err);
             }
         });
     </script>
