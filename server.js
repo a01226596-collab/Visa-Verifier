@@ -7,14 +7,8 @@ app.use(express.urlencoded({ extended: true }));
 
 const visaDatabase = [
     {
-        appNum: "100065721984",
-        docNum: "EQ2467360",
-        nationality: "ETHIOPIA",
-        status: "Approved"
-    },
-    {
-        appNum: "100065721667",
-        docNum: "EQ2580235",
+        appNum: "100066707335",
+        docNum: "E00865368",
         nationality: "ETHIOPIA",
         status: "Approved"
     }
@@ -28,7 +22,7 @@ app.post('/api/track', (req, res) => {
     const { appNum, docNum, nationality } = req.body;
 
     const match = visaDatabase.find(item => 
-        item.appNum === appNum.trim() && 
+        item.appNum.trim() === appNum.trim() && 
         item.docNum.trim().toUpperCase() === docNum.trim().toUpperCase() &&
         item.nationality === nationality
     );
